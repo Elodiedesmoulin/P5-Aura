@@ -9,14 +9,14 @@ import SwiftUI
 
 
 class AuthenticationViewModel: ObservableObject {
-    @Published var email: String = ""
-    @Published var password: String = ""
+    @Published var email: String = "test@aura.app"
+    @Published var password: String = "test123"
     @Published var isAuthenticated: Bool = false
     @Published var errorMessage: String? = nil
     
-    let onLoginSucceed: (() -> ())
+    let onLoginSucceed: ((_ token: String) -> ())
     
-    init(_ callback: @escaping () -> ()) {
+    init(_ callback: @escaping (_ token: String) -> ()) {
         self.onLoginSucceed = callback
     }
     
@@ -31,7 +31,7 @@ class AuthenticationViewModel: ObservableObject {
                 let token = try await AuraService().login(email: email, password: password)
                 DispatchQueue.main.async {
                     self.isAuthenticated = true
-                    self.onLoginSucceed()
+                    self.onLoginSucceed(token)
                 }
             } catch {
                 DispatchQueue.main.async {

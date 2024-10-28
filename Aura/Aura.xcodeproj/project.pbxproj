@@ -21,6 +21,9 @@
 		53D418A12AC71B8F0070ADB1 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D418A02AC71B8F0070ADB1 /* View+Extensions.swift */; };
 		F6CB54D02CC7FAFB00E05F20 /* AuthenticationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54CF2CC7FAFB00E05F20 /* AuthenticationResponse.swift */; };
 		F6CB54D22CC7FC8C00E05F20 /* AuraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54D12CC7FC8C00E05F20 /* AuraService.swift */; };
+		F6CB54D82CCEAE2B00E05F20 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54D72CCEAE2B00E05F20 /* TransactionResponse.swift */; };
+		F6CB54DA2CCF7C4C00E05F20 /* AuraServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54D92CCF7C4C00E05F20 /* AuraServiceError.swift */; };
+		F6CB54DC2CCFE1DA00E05F20 /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54DB2CCFE1DA00E05F20 /* TransactionListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,9 @@
 		53D418A02AC71B8F0070ADB1 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		F6CB54CF2CC7FAFB00E05F20 /* AuthenticationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthenticationResponse.swift; path = Aura/Models/AuthenticationResponse.swift; sourceTree = SOURCE_ROOT; };
 		F6CB54D12CC7FC8C00E05F20 /* AuraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuraService.swift; path = Aura/AuraService.swift; sourceTree = SOURCE_ROOT; };
+		F6CB54D72CCEAE2B00E05F20 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
+		F6CB54D92CCF7C4C00E05F20 /* AuraServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuraServiceError.swift; sourceTree = "<group>"; };
+		F6CB54DB2CCFE1DA00E05F20 /* TransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,7 @@
 			children = (
 				53D418962AC70FC50070ADB1 /* Utils */,
 				F6CB54D12CC7FC8C00E05F20 /* AuraService.swift */,
+				F6CB54D92CCF7C4C00E05F20 /* AuraServiceError.swift */,
 				53D4188B2AC709B80070ADB1 /* Models */,
 				53D4188A2AC709B30070ADB1 /* ViewModels */,
 				53D418892AC709AD0070ADB1 /* Views */,
@@ -96,6 +103,7 @@
 			children = (
 				53D418902AC70A920070ADB1 /* AuthenticationView.swift */,
 				53D418922AC70AB10070ADB1 /* AccountDetailView.swift */,
+				F6CB54DB2CCFE1DA00E05F20 /* TransactionListView.swift */,
 				53D418942AC70ABF0070ADB1 /* MoneyTransferView.swift */,
 			);
 			path = Views;
@@ -116,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				F6CB54CF2CC7FAFB00E05F20 /* AuthenticationResponse.swift */,
+				F6CB54D72CCEAE2B00E05F20 /* TransactionResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -201,10 +210,13 @@
 			files = (
 				53D4187C2AC7099A0070ADB1 /* AuraApp.swift in Sources */,
 				53D418952AC70ABF0070ADB1 /* MoneyTransferView.swift in Sources */,
+				F6CB54DC2CCFE1DA00E05F20 /* TransactionListView.swift in Sources */,
 				53D4189B2AC711990070ADB1 /* AuthenticationViewModel.swift in Sources */,
 				53D4189D2AC715AA0070ADB1 /* AccountDetailViewModel.swift in Sources */,
 				53D418912AC70A920070ADB1 /* AuthenticationView.swift in Sources */,
+				F6CB54D82CCEAE2B00E05F20 /* TransactionResponse.swift in Sources */,
 				53D418932AC70AB10070ADB1 /* AccountDetailView.swift in Sources */,
+				F6CB54DA2CCF7C4C00E05F20 /* AuraServiceError.swift in Sources */,
 				F6CB54D22CC7FC8C00E05F20 /* AuraService.swift in Sources */,
 				53D4189F2AC717890070ADB1 /* MoneyTransferViewModel.swift in Sources */,
 				53D4188D2AC709F40070ADB1 /* AppViewModel.swift in Sources */,

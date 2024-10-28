@@ -9,18 +9,20 @@ import Foundation
 
 class AppViewModel: ObservableObject {
     @Published var isLogged: Bool
+    var token: String?
     
     init() {
         isLogged = false
     }
     
     var authenticationViewModel: AuthenticationViewModel {
-        return AuthenticationViewModel { [weak self] in
+        return AuthenticationViewModel { [weak self] token in
+            self?.token = token
             self?.isLogged = true
         }
     }
     
     var accountDetailViewModel: AccountDetailViewModel {
-        return AccountDetailViewModel()
+        return AccountDetailViewModel(token: token!)
     }
 }
