@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct TransactionListView: View {
+    var transactions: [AccountDetailsResponse.Transaction]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("All Transactions")
+                .font(.headline)
+                .padding()
+            
+            List(transactions) { transaction in
+                HStack {
+                    Image(systemName: transaction.value > 0 ? "arrow.up.right.circle.fill" : "arrow.down.left.circle.fill")
+                        .foregroundColor(transaction.value > 0 ? .green : .red)
+                    Text(transaction.label)
+                    Spacer()
+                    Text(String(format: "%.2f", transaction.value))
+                        .fontWeight(.bold)
+                        .foregroundColor(transaction.value > 0 ? .green : .red)
+                }
+                .padding()
+            }
+        }
+        .navigationTitle("Transactions")
     }
-}
-
-#Preview {
-    TransactionListView()
 }

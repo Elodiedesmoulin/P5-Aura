@@ -10,6 +10,7 @@ import Foundation
 class AccountDetailViewModel: ObservableObject {
     @Published var totalAmount: String = "€0.00"
     @Published var recentTransactions: [AccountDetailsResponse.Transaction] = []
+    @Published var allTransactions: [AccountDetailsResponse.Transaction] = []  // Ajout pour stocker toutes les transactions
     let token: String
     
     init(token: String) {
@@ -22,6 +23,7 @@ class AccountDetailViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.totalAmount = String(format: "€%.2f", accountDetails.currentBalance)
                 self.recentTransactions = Array(accountDetails.transactions.prefix(3))
+                self.allTransactions = accountDetails.transactions  // Stocke toutes les transactions
             }
         } catch {
             print("Erreur lors de la récupération des détails du compte : \(error.localizedDescription)")
