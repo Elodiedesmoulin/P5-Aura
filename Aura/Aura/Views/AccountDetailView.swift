@@ -52,7 +52,7 @@ struct AccountDetailView: View {
                 }
                 
                 // NavigationLink pour "See Transaction Details"
-                NavigationLink(destination: TransactionListView(transactions: viewModel.allTransactions), isActive: $showAllTransactions) {
+                NavigationLink(destination: AllTransactionsListView(transactions: viewModel.allTransactions), isActive: $showAllTransactions) {
                     Button(action: {
                         showAllTransactions = true  // Déclencher la navigation
                     }) {
@@ -71,9 +71,7 @@ struct AccountDetailView: View {
                 Spacer()
             }
             .onAppear {
-                Task {
-                    await viewModel.fetchAccountDetails()
-                }
+                viewModel.fetchAccountDetails()
             }
             .onTapGesture {
                 self.endEditing(true)

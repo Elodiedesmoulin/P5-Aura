@@ -25,4 +25,8 @@ class AppViewModel: ObservableObject {
     var accountDetailViewModel: AccountDetailViewModel {
         return AccountDetailViewModel(token: token!)
     }
+    
+    var moneyTransferViewModel: MoneyTransferViewModel {
+        return MoneyTransferViewModel(token: token!)
+    }
 }

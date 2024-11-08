@@ -22,7 +22,7 @@ struct AuraApp: App {
                                 Text("Account")
                             }
                         
-                        MoneyTransferView()
+                        MoneyTransferView(viewModel: viewModel.moneyTransferViewModel)
                             .tabItem {
                                 Image(systemName: "arrow.right.arrow.left.circle")
                                 Text("Transfer")

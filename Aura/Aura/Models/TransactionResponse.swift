@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AccountDetailsResponse: Codable {
+struct TransactionResponse: Codable {
     let currentBalance: Double
     let transactions: [Transaction]
     

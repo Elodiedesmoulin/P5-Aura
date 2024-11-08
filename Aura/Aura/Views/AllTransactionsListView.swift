@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct TransactionListView: View {
-    var transactions: [AccountDetailsResponse.Transaction]
+struct AllTransactionsListView: View {
+    var transactions: [TransactionResponse.Transaction]
     
     var body: some View {
         VStack {

@@ -49,7 +49,6 @@ struct AuthenticationView: View {
                         .cornerRadius(8)
                     
                     Button(action: {
-                        // Handle authentication logic here
                         viewModel.login()
                     }) {
                         Text("Se connecter")
