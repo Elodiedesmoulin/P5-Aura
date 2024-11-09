@@ -62,13 +62,10 @@ class AuraService {
         let (data, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse {
-            print("HTTP Status Code:", httpResponse.statusCode)
             if httpResponse.statusCode != 200 {
                 throw AuraServiceError.invalidResponse
             }
         }
-        
-        print("Response Data:", String(data: data, encoding: .utf8) ?? "No data")
         
         let accountDetails = try JSONDecoder().decode(TransactionResponse.self, from: data)
         return accountDetails
@@ -94,15 +91,12 @@ class AuraService {
         request.setValue(token, forHTTPHeaderField: "token")
         request.httpBody = jsonData
         
-        print("Headers:", request.allHTTPHeaderFields ?? "No Headers")
-        
         let (data, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             throw AuraServiceError.invalidResponse
         }
         
-        print("Transfert réussi:", String(data: data, encoding: .utf8) ?? "Aucune donnée")
     }
     
     

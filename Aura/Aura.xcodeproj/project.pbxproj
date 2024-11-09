@@ -24,12 +24,11 @@
 		F6CB54D82CCEAE2B00E05F20 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54D72CCEAE2B00E05F20 /* TransactionResponse.swift */; };
 		F6CB54DA2CCF7C4C00E05F20 /* AuraServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54D92CCF7C4C00E05F20 /* AuraServiceError.swift */; };
 		F6CB54DC2CCFE1DA00E05F20 /* AllTransactionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54DB2CCFE1DA00E05F20 /* AllTransactionsListView.swift */; };
-		F6CB54EF2CD8B36300E05F20 /* AuraTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54EE2CD8B36300E05F20 /* AuraTestCase.swift */; };
-		F6CB54F62CD8B3B300E05F20 /* Auth.json in Resources */ = {isa = PBXBuildFile; fileRef = F6CB54F52CD8B3B300E05F20 /* Auth.json */; };
 		F6CB54F82CD8B43D00E05F20 /* FakeResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54F72CD8B43D00E05F20 /* FakeResponseData.swift */; };
 		F6CB54FA2CD8BD7E00E05F20 /* SessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54F92CD8BD7E00E05F20 /* SessionProtocol.swift */; };
 		F6CB55002CDE07A600E05F20 /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB54FF2CDE07A600E05F20 /* MockSession.swift */; };
-		F6CB55022CDE07DD00E05F20 /* AuthenticationViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB55012CDE07DD00E05F20 /* AuthenticationViewModelTest.swift */; };
+		F6CB550A2CDF65D600E05F20 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB55092CDF65D600E05F20 /* MockURLProtocol.swift */; };
+		F6CB550C2CDF66B300E05F20 /* AuraServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB550B2CDF66B300E05F20 /* AuraServiceTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,12 +61,11 @@
 		F6CB54D92CCF7C4C00E05F20 /* AuraServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuraServiceError.swift; sourceTree = "<group>"; };
 		F6CB54DB2CCFE1DA00E05F20 /* AllTransactionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTransactionsListView.swift; sourceTree = "<group>"; };
 		F6CB54EC2CD8B36300E05F20 /* AuraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AuraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6CB54EE2CD8B36300E05F20 /* AuraTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuraTestCase.swift; sourceTree = "<group>"; };
-		F6CB54F52CD8B3B300E05F20 /* Auth.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Auth.json; sourceTree = "<group>"; };
 		F6CB54F72CD8B43D00E05F20 /* FakeResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeResponseData.swift; sourceTree = "<group>"; };
 		F6CB54F92CD8BD7E00E05F20 /* SessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionProtocol.swift; sourceTree = "<group>"; };
 		F6CB54FF2CDE07A600E05F20 /* MockSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; };
-		F6CB55012CDE07DD00E05F20 /* AuthenticationViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModelTest.swift; sourceTree = "<group>"; };
+		F6CB55092CDF65D600E05F20 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		F6CB550B2CDF66B300E05F20 /* AuraServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuraServiceTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,11 +172,10 @@
 		F6CB54DF2CD8B12200E05F20 /* AuraTests */ = {
 			isa = PBXGroup;
 			children = (
-				F6CB54EE2CD8B36300E05F20 /* AuraTestCase.swift */,
-				F6CB54F52CD8B3B300E05F20 /* Auth.json */,
 				F6CB54F72CD8B43D00E05F20 /* FakeResponseData.swift */,
 				F6CB54FF2CDE07A600E05F20 /* MockSession.swift */,
-				F6CB55012CDE07DD00E05F20 /* AuthenticationViewModelTest.swift */,
+				F6CB55092CDF65D600E05F20 /* MockURLProtocol.swift */,
+				F6CB550B2CDF66B300E05F20 /* AuraServiceTest.swift */,
 			);
 			name = AuraTests;
 			path = Aura/Views/AuraTests;
@@ -274,7 +271,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6CB54F62CD8B3B300E05F20 /* Auth.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,9 +304,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6CB55022CDE07DD00E05F20 /* AuthenticationViewModelTest.swift in Sources */,
+				F6CB550A2CDF65D600E05F20 /* MockURLProtocol.swift in Sources */,
 				F6CB55002CDE07A600E05F20 /* MockSession.swift in Sources */,
-				F6CB54EF2CD8B36300E05F20 /* AuraTestCase.swift in Sources */,
+				F6CB550C2CDF66B300E05F20 /* AuraServiceTest.swift in Sources */,
 				F6CB54F82CD8B43D00E05F20 /* FakeResponseData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

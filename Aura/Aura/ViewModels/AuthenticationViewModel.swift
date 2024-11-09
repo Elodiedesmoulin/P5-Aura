@@ -9,8 +9,9 @@ import SwiftUI
 
 
 class AuthenticationViewModel: ObservableObject {
-    @Published var email: String = "test@aura.app"
-    @Published var password: String = "test123"
+    
+    @Published var email: String = ""
+    @Published var password: String = ""
     @Published var isAuthenticated: Bool = false
     @Published var errorMessage: String? = nil
     

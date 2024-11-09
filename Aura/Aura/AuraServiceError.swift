@@ -12,6 +12,7 @@ enum AuraServiceError: LocalizedError {
     case invalidParameters
     case invalidAuthentication
     case invalidResponse
+    case unknown
     
     var errorDescription: String? {
         switch self {
@@ -23,6 +24,8 @@ enum AuraServiceError: LocalizedError {
             return "Authentification échouée, token non trouvé ou incorrect."
         case .invalidResponse:
             return "Réponse du serveur non valide."
+        case .unknown:
+            return "Erreur inconnue"
         }
     }
 }
