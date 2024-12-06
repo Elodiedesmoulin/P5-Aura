@@ -12,200 +12,112 @@ import XCTest
 
 final class AuraServiceTest: XCTestCase {
     
-    private var auraService: AuraService!
     let expectation = XCTestExpectation(description: #function)
     
-    override func setUp() {
-        super.setUp()
-        
-        // Configuration de la session URL avec le protocole de test
-        let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
-        let urlSession = URLSession(configuration: configuration)
-        
-        // Initialisation de `AuraService` avec la session URL simulée
-        auraService = AuraService(session: urlSession)
-        
-    }
     
-    override func tearDown() {
-        auraService = nil
-        super.tearDown()
-        MockURLProtocol.loadingHandler = nil
-    }
-    
-    
-    func testLogin_successfulResponse() async {
-        let jsonString = """
-                         {
-                            "token": "valid-token"
-                         }
-                         """
-        let data = jsonString.data(using: .utf8)
-        
-        // Configuration de la réponse et des données pour le mock
-        MockURLProtocol.loadingHandler = { request in
-            let response = HTTPURLResponse(
-                url: URL(string: "\(self.auraService.baseUrl)/auth")!,
-                statusCode: 200,
-                httpVersion: nil,
-                headerFields: nil
-            )!
-            return (response, data)
-        }
+    func testLoginWithValidCredentialsShouldReturnToken() async {
+        let mockSession = MockSession(data: FakeResponseData.authCorrectData, urlResponse: FakeResponseData.statusOK)
+        let auraService = AuraService(session: mockSession)
         
         do {
-            let token = try await auraService.login(email: "test@example.com", password: "password")
-            XCTAssertEqual(token, "valid-token", "Le token doit être 'valid-token'")
-            self.expectation.fulfill()
+            let token = try await auraService.login(username: "test", password: "password")
+            
+            XCTAssertEqual(token, "mock-token")
         } catch {
-            XCTFail("Erreur inattendue: \(error)")
+            XCTFail("L'authentification a échoué avec l'erreur: \(error)")
         }
-        
-        await fulfillment(of: [expectation], timeout: 1.0)
     }
     
     
-    // - MARK: Testing getAccountDetails
-    
-    func test_getAccountDetails_successfulResponse() async throws {
-        // Réponse JSON simulée
-        let jsonString = """
-            {
-                "currentBalance": 1000.0,
-                "transactions": [
-                    { "value": -50.0, "label": "Grocery" },
-                    { "value": 200.0, "label": "Salary" }
-                ]
-            }
-            """
-        let data = jsonString.data(using: .utf8)
+    func testLoginWithInvalidCredentialsShouldFailWithNetworkError() async {
         
-        MockURLProtocol.loadingHandler = { request in
-            let response = HTTPURLResponse(
-                url: URL(string: "\(self.auraService.baseUrl)/account")!,
-                statusCode: 200,
-                httpVersion: nil,
-                headerFields: nil
-            )!
-            return (response, data)
-        }
+        let mockSession = MockSession(data: FakeResponseData.authIncorrectData, urlResponse: FakeResponseData.statusKO)
+        let auraService = AuraService(session: mockSession)
         
         do {
-            let transactionResponse = try await auraService.getAccountDetails(token: "valid-token")
+            _ = try await auraService.login(username: "test@aura.app", password: "test123")
+            XCTFail("Authentication should fail")
+        } catch {
+            XCTAssertEqual(error as? AuraServiceError, .networkError)
+        }
+    }
+    
+    
+    
+    // MARK: - Testing getAccountDetails
+    
+    
+    func testGetAccountDetailsWithValidResponseShouldReturnTransactionData() async throws {
+        let mockSession = MockSession(data: FakeResponseData.accountDetailCorrectData,
+                                      urlResponse: FakeResponseData.statusOK)
+        let auraService = AuraService(session: mockSession)
+        
+        do {
+            let transactionResponse = try await auraService.getAccountDetails(token: "mock-token")
             
-            XCTAssertEqual(transactionResponse.currentBalance, 1000.0)
-            XCTAssertEqual(transactionResponse.transactions.count, 2)
-            XCTAssertEqual(transactionResponse.transactions[0].value, -50.0)
-            XCTAssertEqual(transactionResponse.transactions[0].label, "Grocery")
-            XCTAssertEqual(transactionResponse.transactions[1].value, 200.0)
-            XCTAssertEqual(transactionResponse.transactions[1].label, "Salary")
+            XCTAssertEqual(transactionResponse.currentBalance, 5459.32)
+            XCTAssertEqual(transactionResponse.transactions.count, 50)
+            XCTAssertEqual(transactionResponse.transactions[0].value, -56.4)
+            XCTAssertEqual(transactionResponse.transactions[0].label, "IKEA")
+            XCTAssertEqual(transactionResponse.transactions[1].value, -10)
+            XCTAssertEqual(transactionResponse.transactions[1].label, "Starbucks")
+            XCTAssertEqual(transactionResponse.transactions[2].value, 1400)
+            XCTAssertEqual(transactionResponse.transactions[2].label, "Pole Emploi")
             
-            expectation.fulfill()
         } catch {
             XCTFail("Unexpected error: \(error)")
         }
-        
-        await fulfillment(of: [expectation], timeout: 1.0)
     }
     
-    func test_getAccountDetails_invalidResponse() async {
-        // Initialisation de l'attente
-        let expectation = expectation(description: "Expectation")
+    
+    func testGetAccountDetailsWithInvalidResponseShouldFailWithNetworkError() async throws {
+        let mockSession = MockSession(data: FakeResponseData.accountDetailCorrectData,
+                                      urlResponse: FakeResponseData.statusKO)
+        let auraService = AuraService(session: mockSession)
         
-        // Configuration de la réponse simulée
-        MockURLProtocol.loadingHandler = { request in
-            let response = HTTPURLResponse(
-                url: URL(string: "https://testingurl.com/account")!,
-                statusCode: 404, httpVersion: nil, headerFields: [:]
-            )!
-            return (response, nil)
-        }
-        
-        // Exécution de la fonction testée
         do {
-            let token = "invalid-token"
-            _ = try await auraService.getAccountDetails(token: token)
-            XCTFail("Expected to throw an error due to invalid response")
-        } catch AuraServiceError.invalidResponse {
-            // Vérification de l'erreur et accomplissement de l'attente
-            XCTAssert(true, "Correct error thrown")
-            expectation.fulfill()
+            _ = try await auraService.getAccountDetails(token: "mock-token")
+            XCTFail("Expected error, but got a valid response")
         } catch {
-            XCTFail("Unexpected error: \(error)")
-            expectation.fulfill()
+            XCTAssertEqual(error as? AuraServiceError, .networkError)
         }
-        
-        // Attente asynchrone de la complétion
-        await fulfillment(of: [expectation], timeout: 1.0)
     }
     
     
-    // - MARK: Testing sendMoney
+    // MARK: - Testing sendMoney
     
-    func test_sendMoney_successfulResponse() async {
-        // Given
-        let expectation = XCTestExpectation(description: "Successful transfer expectation")
-
-        MockURLProtocol.loadingHandler = { request in
-            // Simule une réponse de succès avec un code 200
-            let response = HTTPURLResponse(
-                url: URL(string: "https://testingurl.com/account/transfer")!,
-                statusCode: 200,
-                httpVersion: nil,
-                headerFields: [:]
-            )!
-            return (response, nil) // Réponse avec succès et sans données supplémentaires
-        }
-
-        // When
+    
+    func testSendMoneyWithValidResponseShouldSucceed() async throws {
+        let mockSession = MockSession(data: FakeResponseData.accountDetailCorrectData,
+                                      urlResponse: FakeResponseData.statusOK,
+                                      error: nil)
+        let auraService = AuraService(session: mockSession)
+        
+        let token = "mock-token"
+        let recipient = "recipient@example.com"
+        let amount: Decimal = 100.0
+        try await auraService.sendMoney(token: token, recipient: recipient, amount: amount)
+        
+    }
+    
+    
+    func testSendMoneyWithInvalidResponseShouldFailWithNetworkError() async {
+        let mockSession = MockSession(data: FakeResponseData.accountDetailCorrectData,
+                                      urlResponse: FakeResponseData.statusKO,
+                                      error: nil)
+        let auraService = AuraService(session: mockSession)
+        
         do {
-            let token = "valid-token"
+            let token = "mock-token"
             let recipient = "recipient@example.com"
             let amount: Decimal = 100.0
+            
             try await auraService.sendMoney(token: token, recipient: recipient, amount: amount)
-            XCTAssertTrue(true, "Money transfer successful")
-            expectation.fulfill() // L'attente est remplie ici lorsque l'appel est effectué avec succès
-        } catch {
-            XCTFail("Unexpected error: \(error)")
-        }
-
-        // Then
-        await fulfillment(of: [expectation], timeout: 1.0)
-    }
-
-    func test_sendMoney_invalidResponse() async {
-        // Given
-        let expectation = XCTestExpectation(description: "Invalid response expectation")
-
-        MockURLProtocol.loadingHandler = { request in
-            // Simule une réponse serveur avec une erreur HTTP 400 (mauvaise requête)
-            let response = HTTPURLResponse(
-                url: URL(string: "https://testingurl.com/account/transfer")!,
-                statusCode: 400,
-                httpVersion: nil,
-                headerFields: [:]
-            )!
-            return (response, nil) // Réponse avec erreur HTTP
-        }
-
-        // When
-        do {
-            let token = "valid-token"
-            let recipient = "recipient@example.com"
-            let amount: Decimal = 100.0
-            _ = try await auraService.sendMoney(token: token, recipient: recipient, amount: amount)
+            
             XCTFail("Expected to throw an error due to invalid response")
-        } catch AuraServiceError.invalidResponse {
-            // Then
-            XCTAssertTrue(true, "Correct error thrown due to invalid response")
-            expectation.fulfill()
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            XCTAssertEqual(error as? AuraServiceError, .networkError)
         }
-
-        await fulfillment(of: [expectation], timeout: 1.0)
     }
-    
 }
 

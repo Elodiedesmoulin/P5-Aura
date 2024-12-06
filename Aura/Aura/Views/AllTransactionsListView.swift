@@ -1,5 +1,5 @@
 //
-//  TransactionListView.swift
+//  AllTransactionsListView.swift
 //  Aura
 //
 //  Created by Elo on 28/10/2024.

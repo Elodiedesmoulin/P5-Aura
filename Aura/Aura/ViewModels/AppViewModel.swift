@@ -2,7 +2,7 @@
 //  AppViewModel.swift
 //  Aura
 //
-//  Created by Vincent Saluzzo on 29/09/2023.
+//  Created by Elo on 28/10/2024.
 //
 
 import Foundation
@@ -10,13 +10,15 @@ import Foundation
 class AppViewModel: ObservableObject {
     @Published var isLogged: Bool
     var token: String?
+    let session: SessionProtocol
     
-    init() {
+    init(session: SessionProtocol = URLSession.shared) {
         isLogged = false
+        self.session = session
     }
     
     var authenticationViewModel: AuthenticationViewModel {
-        return AuthenticationViewModel { [weak self] token in
+        return AuthenticationViewModel(session: session) { [weak self] token in
             self?.token = token
             self?.isLogged = true
         }

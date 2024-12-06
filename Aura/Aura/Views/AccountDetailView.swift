@@ -2,7 +2,7 @@
 //  AccountDetailView.swift
 //  Aura
 //
-//  Created by Vincent Saluzzo on 29/09/2023.
+//  Created by Elo on 28/10/2024.
 //
 
 import SwiftUI
@@ -49,12 +49,19 @@ struct AccountDetailView: View {
                         .cornerRadius(8)
                         .padding([.horizontal])
                     }
+                    
+                    if let errorMessage = viewModel.errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .padding(.top, 10)
+                    }
                 }
                 
                 // NavigationLink pour "See Transaction Details"
                 NavigationLink(destination: AllTransactionsListView(transactions: viewModel.allTransactions), isActive: $showAllTransactions) {
                     Button(action: {
-                        showAllTransactions = true  // Déclencher la navigation
+                        showAllTransactions = true
                     }) {
                         HStack {
                             Image(systemName: "list.bullet")

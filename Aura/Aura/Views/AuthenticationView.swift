@@ -2,26 +2,23 @@
 //  AuthenticationView.swift
 //  Aura
 //
-//  Created by Vincent Saluzzo on 29/09/2023.
+//  Created by Elo on 28/10/2024.
 //
 
 import SwiftUI
 
 struct AuthenticationView: View {
     
-    @State private var username: String = ""
-    @State private var password: String = ""
-    
     let gradientStart = Color(hex: "#94A684").opacity(0.7)
     let gradientEnd = Color(hex: "#94A684").opacity(0.0) // Fades to transparent
-
+    
     @ObservedObject var viewModel: AuthenticationViewModel
-
+    
     
     var body: some View {
         NavigationStack{
             ZStack {
-                // Background gradient
+                
                 LinearGradient(gradient: Gradient(colors: [gradientStart, gradientEnd]), startPoint: .top, endPoint: .bottomLeading)
                     .edgesIgnoringSafeArea(.all)
                 
@@ -35,7 +32,7 @@ struct AuthenticationView: View {
                         .font(.largeTitle)
                         .fontWeight(.semibold)
                     
-                    TextField("Adresse email", text: $viewModel.email)
+                    TextField("Adresse email", text: $viewModel.username)
                         .padding()
                         .background(Color(UIColor.secondarySystemBackground))
                         .cornerRadius(8)
@@ -48,6 +45,17 @@ struct AuthenticationView: View {
                         .background(Color(UIColor.secondarySystemBackground))
                         .cornerRadius(8)
                     
+                    
+                    if let errorMessage = viewModel.errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+                    
+                    
+                    
                     Button(action: {
                         viewModel.login()
                     }) {
@@ -58,23 +66,17 @@ struct AuthenticationView: View {
                             .background(Color(hex: "#94A684"))
                             .cornerRadius(8)
                     }
-                    .opacity(viewModel.isPasswordValid() ? 1 : 0.6)
-                    .disabled(!viewModel.isPasswordValid())
                     
-                    }
-                    .padding(.horizontal, 40)
+                    
                     
                 }
-                .onTapGesture {
-                    self.endEditing(true)  // This will dismiss the keyboard when tapping outside
-                }
+                .padding(.horizontal, 40)
+                
+            }
+            .onTapGesture {
+                self.endEditing(true)
             }
         }
     }
+}
 
-
-//#Preview {
-//    AuthenticationView(viewModel: AuthenticationViewModel({
-//        
-//    }))
-//}

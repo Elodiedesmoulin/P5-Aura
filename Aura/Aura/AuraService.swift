@@ -16,19 +16,19 @@ class AuraService {
         self.session = session
     }
     
-    func login(email: String, password: String) async throws -> String {
+    func login(username: String, password: String) async throws -> String {
         
         guard let url = URL(string: "\(baseUrl)/auth") else {
             throw AuraServiceError.invalidUrl
         }
         
         let parameters = [
-            "username": email,
+            "username": username,
             "password": password
         ]
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: parameters) else {
-            throw AuraServiceError.invalidParameters
+            throw AuraServiceError.invalidCredentials
         }
         
         var request = URLRequest(url: url)
@@ -39,12 +39,13 @@ class AuraService {
         let (data, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-            throw AuraServiceError.invalidAuthentication
+            throw AuraServiceError.networkError
         }
         
         let authenticationResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
         return authenticationResponse.token
     }
+
     
     func getAccountDetails(token: String) async throws -> TransactionResponse {
         
@@ -56,14 +57,11 @@ class AuraService {
         request.httpMethod = "GET"
         request.setValue(token, forHTTPHeaderField: "token")
         
-        print("Request URL:", request.url?.absoluteString ?? "No URL")
-        print("Request Headers:", request.allHTTPHeaderFields ?? "No Headers")
-        
         let (data, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse {
             if httpResponse.statusCode != 200 {
-                throw AuraServiceError.invalidResponse
+                throw AuraServiceError.networkError
             }
         }
         
@@ -82,7 +80,7 @@ class AuraService {
         ]
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: parameters) else {
-            throw AuraServiceError.invalidParameters
+            throw AuraServiceError.invalidTransaction
         }
         
         var request = URLRequest(url: url)
@@ -94,11 +92,8 @@ class AuraService {
         let (data, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-            throw AuraServiceError.invalidResponse
+            throw AuraServiceError.networkError
         }
-        
     }
-    
-    
 }
 

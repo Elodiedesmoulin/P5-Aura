@@ -2,7 +2,7 @@
 //  MoneyTransferView.swift
 //  Aura
 //
-//  Created by Vincent Saluzzo on 29/09/2023.
+//  Created by Elo on 28/10/2024.
 //
 
 import SwiftUI
@@ -50,6 +50,9 @@ struct MoneyTransferView: View {
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(8)
                     .keyboardType(.decimalPad)
+                    .onTapGesture {
+                        self.endEditing(true)
+                    }
             }
             
             Button(action: {
@@ -63,25 +66,25 @@ struct MoneyTransferView: View {
                 .background(Color(hex: "#94A684"))
                 .foregroundColor(.white)
                 .cornerRadius(8)
+                
             }
             .buttonStyle(PlainButtonStyle())
             
+            
             if !viewModel.transferMessage.isEmpty {
                 Text(viewModel.transferMessage)
+                    .foregroundColor(viewModel.transferMessage.contains("succès") ? .green : .red)
                     .padding(.top, 20)
                     .transition(.move(edge: .top))
             }
             
             Spacer()
         }
-        .padding()
         .onTapGesture {
             self.endEditing(true)
         }
+        .padding()
+        
     }
 }
 
-
-//#Preview {
-//    MoneyTransferView()
-//}
