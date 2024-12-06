@@ -2,7 +2,7 @@
 //  MoneyTransferView.swift
 //  Aura
 //
-//  Created by Elo on 28/10/2024.
+//  Created by Vincent Saluzzo on 29/09/2023.
 //
 
 import SwiftUI
@@ -14,7 +14,6 @@ struct MoneyTransferView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            // Adding a fun header image
             Image(systemName: "arrow.right.arrow.left.circle.fill")
                 .resizable()
                 .scaledToFit()

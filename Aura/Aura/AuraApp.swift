@@ -2,7 +2,7 @@
 //  AuraApp.swift
 //  Aura
 //
-//  Created by Elo on 22/10/2024.
+//  Created by Vincent Saluzzo on 29/09/2023.
 //
 
 import SwiftUI
