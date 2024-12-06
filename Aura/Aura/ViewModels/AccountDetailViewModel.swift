@@ -8,18 +8,23 @@
 import Foundation
 
 class AccountDetailViewModel: ObservableObject {
+    
     @Published var totalAmount: String = "€0.00"
     @Published var recentTransactions: [TransactionResponse.Transaction] = []
     @Published var allTransactions: [TransactionResponse.Transaction] = []
     @Published var errorMessage: String?
+    
     let token: String
     var service: AuraService
-
+    
+    
     init(token: String, session: SessionProtocol = URLSession.shared) {
         self.token = token
         self.service = AuraService(session: session)
     }
-
+    
+    
+    
     func fetchAccountDetails() {
         Task {
             do {

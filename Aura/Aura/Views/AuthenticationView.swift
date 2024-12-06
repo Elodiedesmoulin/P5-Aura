@@ -57,6 +57,7 @@ struct AuthenticationView: View {
                     
                     
                     Button(action: {
+                        self.endEditing(true)
                         viewModel.login()
                     }) {
                         Text("Se connecter")

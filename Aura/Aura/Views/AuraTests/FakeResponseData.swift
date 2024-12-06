@@ -23,8 +23,7 @@ class FakeResponseData {
     
     
     // MARK: API Error
-    
-    // Create class with Error protocol to have instance of Error
+
     class APIError: Error {}
     static let error = APIError()
     

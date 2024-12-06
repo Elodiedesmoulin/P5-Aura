@@ -56,6 +56,7 @@ struct MoneyTransferView: View {
             }
             
             Button(action: {
+                self.endEditing(true)
                 viewModel.sendMoney()
             }) {
                 HStack {
@@ -73,7 +74,7 @@ struct MoneyTransferView: View {
             
             if !viewModel.transferMessage.isEmpty {
                 Text(viewModel.transferMessage)
-                    .foregroundColor(viewModel.transferMessage.contains("succès") ? .green : .red)
+                    .foregroundColor(viewModel.transferMessage.contains("successfully") ? .green : .red)
                     .padding(.top, 20)
                     .transition(.move(edge: .top))
             }

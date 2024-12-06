@@ -8,20 +8,39 @@
 import Foundation
 
 class MoneyTransferViewModel: ObservableObject {
+    
     @Published var recipient: String = ""
     @Published var amount: String = ""
     @Published var transferMessage: String = ""
-    @Published var currentBalance: Double = 0.0  // Utilisation de la propriété déjà définie dans TransactionResponse
-
+    @Published var currentBalance: Double = 0.0
+    
     var service = AuraService()
     let token: String
 
+    
     init(token: String, session: SessionProtocol = URLSession.shared) {
         self.token = token
         self.service = AuraService(session: session)
         fetchCurrentBalance()
     }
 
+    
+    // MARK: - Private Method
+    
+    private func isValidRecipient(_ recipient: String) -> Bool {
+        let phoneRegex = "^(\\+33|0)[1-9](\\d{8})$"
+        let emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+
+        return phoneTest.evaluate(with: recipient) || emailTest.evaluate(with: recipient)
+    }
+    
+    
+    // MARK: - Public Methods
+
+    
     func fetchCurrentBalance() {
         Task {
             do {
@@ -37,6 +56,7 @@ class MoneyTransferViewModel: ObservableObject {
         }
     }
 
+    
     func sendMoney() {
         guard isValidRecipient(recipient) else {
             self.transferMessage = "Please enter a valid French email address or phone number."
@@ -75,15 +95,5 @@ class MoneyTransferViewModel: ObservableObject {
                 }
             }
         }
-    }
-
-    private func isValidRecipient(_ recipient: String) -> Bool {
-        let phoneRegex = "^(\\+33|0)[1-9](\\d{8})$"
-        let emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
-
-        let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
-        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-
-        return phoneTest.evaluate(with: recipient) || emailTest.evaluate(with: recipient)
     }
 }

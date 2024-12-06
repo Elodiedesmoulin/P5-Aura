@@ -7,89 +7,81 @@
 
 import Foundation
 
+
 class AuraService {
     
-    let baseUrl = "http://127.0.0.1:8080"
-    let session: SessionProtocol
+    private let baseUrl = "http://127.0.0.1:8080"
+    private let session: SessionProtocol
+    
     
     init(session: SessionProtocol = URLSession.shared) {
         self.session = session
     }
     
-    func login(username: String, password: String) async throws -> String {
-        
-        guard let url = URL(string: "\(baseUrl)/auth") else {
+    
+  // MARK: - Private Methods
+    
+    
+    private func createRequest(
+        endpoint: String,
+        method: String,
+        token: String? = nil,
+        parameters: [String: Any]? = nil
+    ) throws -> URLRequest {
+        guard let url = URL(string: "\(baseUrl)\(endpoint)") else {
             throw AuraServiceError.invalidUrl
         }
         
-        let parameters = [
-            "username": username,
-            "password": password
-        ]
-        
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: parameters) else {
-            throw AuraServiceError.invalidCredentials
-        }
-        
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
-        
-        let (data, response) = try await session.data(for: request)
-        
+        request.httpMethod = method
+        if let token = token {
+            request.setValue(token, forHTTPHeaderField: "token")
+        }
+        if let parameters = parameters {
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: parameters) else {
+                throw AuraServiceError.invalidTransaction
+            }
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+        }
+        return request
+    }
+    
+    
+    
+    private func handleResponse<T: Decodable>(_ data: Data, _ response: URLResponse, decodingType: T.Type) throws -> T {
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             throw AuraServiceError.networkError
         }
-        
-        let authenticationResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
-        return authenticationResponse.token
+        return try JSONDecoder().decode(T.self, from: data)
     }
+    
+    
+    
+    // MARK: - Public Methods
 
+    func login(username: String, password: String) async throws -> String {
+        let parameters = ["username": username, "password": password]
+        let request = try createRequest(endpoint: "/auth", method: "POST", parameters: parameters)
+        let (data, response) = try await session.data(for: request)
+        let authResponse: AuthenticationResponse = try handleResponse(data, response, decodingType: AuthenticationResponse.self)
+        return authResponse.token
+    }
+    
+    
     
     func getAccountDetails(token: String) async throws -> TransactionResponse {
-        
-        guard let url = URL(string: "\(baseUrl)/account") else {
-            throw AuraServiceError.invalidUrl
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue(token, forHTTPHeaderField: "token")
-        
+        let request = try createRequest(endpoint: "/account", method: "GET", token: token)
         let (data, response) = try await session.data(for: request)
-        
-        if let httpResponse = response as? HTTPURLResponse {
-            if httpResponse.statusCode != 200 {
-                throw AuraServiceError.networkError
-            }
-        }
-        
-        let accountDetails = try JSONDecoder().decode(TransactionResponse.self, from: data)
-        return accountDetails
+        return try handleResponse(data, response, decodingType: TransactionResponse.self)
     }
     
+    
+    
     func sendMoney(token: String, recipient: String, amount: Decimal) async throws {
-        guard let url = URL(string: "\(baseUrl)/account/transfer") else {
-            throw AuraServiceError.invalidUrl
-        }
-        
-        let parameters: [String: Any] = [
-            "recipient": recipient,
-            "amount": amount
-        ]
-        
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: parameters) else {
-            throw AuraServiceError.invalidTransaction
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(token, forHTTPHeaderField: "token")
-        request.httpBody = jsonData
-        
-        let (data, response) = try await session.data(for: request)
+        let parameters: [String: Any] = ["recipient": recipient, "amount": amount]
+        let request = try createRequest(endpoint: "/account/transfer", method: "POST", token: token, parameters: parameters)
+        let (_, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             throw AuraServiceError.networkError
