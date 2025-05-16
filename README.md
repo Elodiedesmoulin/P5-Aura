@@ -1,7 +1,6 @@
 # 🌤 Aura – Simple Bank App (Project P5)
 
-<img width="300" alt="Aura Bank App" src="![image](https://github.com/user-attachments/assets/d8d2a46b-4b03-4c89-b4c6-46a97b63b778)
-">
+<img width="300" alt="Aura Bank App" src="![image](https://github.com/user-attachments/assets/2636fc06-9f7e-4811-a178-4bcc679f0fc8)">
 
 ## Table of Contents
 
