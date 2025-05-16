@@ -1,6 +1,7 @@
-# 🌤 Aura – Weather Forecast App (Project P5)
+# 🌤 Aura – Simple Bank App (Project P5)
 
-<![image](https://github.com/user-attachments/assets/26082658-6672-4abe-9298-fb2c621d53e0)>
+<img width="300" alt="Aura Bank App" src="![image](https://github.com/user-attachments/assets/d8d2a46b-4b03-4c89-b4c6-46a97b63b778)
+">
 
 ## Table of Contents
 
@@ -16,34 +17,34 @@
 
 ### Introduction
 
-**Aura** is a minimalist weather forecast app built with **SwiftUI**.  
+**Aura** is a simple and modern banking app prototype built with **SwiftUI**.  
 It was developed as part of the **iOS Developer path (Project 5)** at OpenClassrooms.  
-The goal of this project is to fetch external data via a REST API, decode it using Swift, and display it in a clean, interactive mobile UI.
+The goal was to consume data from an external REST API, manage data display using MVVM architecture, and create a responsive and dynamic mobile interface.
 
 ---
 
 ### Features
 
-- **API Integration** with OpenWeatherMap to fetch real-time weather data
-- **Current weather display**: temperature, icon, location
-- **Daily forecast**: upcoming days with min/max temperatures and condition icons
-- **JSON parsing** with `Codable` models
-- **Modern SwiftUI interface** with adaptive layout
+- **Displays a list of banking transactions** retrieved from an API
+- **Detailed transaction view** for each item
+- **Clean, scrollable interface** built with SwiftUI
+- **Static authentication view**
+- **Data loaded asynchronously with decoding from JSON**
 
 ---
 
 ### Architecture
 
-The app follows the **MVVM architecture**:
+The app follows a simple **MVVM architecture**:
 
 #### View
-Displays the user interface using SwiftUI. Handles user interactions.
+Handles user interface using SwiftUI components.
 
 #### ViewModel
-Processes raw data from the API, transforms it into display-friendly information, and handles business logic.
+Fetches and prepares data for the views. Implements business logic and formats raw model data.
 
 #### Model
-Contains the data structures representing weather data, decoded from JSON responses.
+Contains the transaction data structure (`Transaction`) and handles JSON decoding using `Codable`.
 
 ---
 
@@ -53,7 +54,6 @@ Contains the data structures representing weather data, decoded from JSON respon
 
 - Xcode 15 or later
 - iOS 17 or later
-- Internet connection (for API calls)
 
 ---
 
@@ -61,4 +61,4 @@ Contains the data structures representing weather data, decoded from JSON respon
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/Aura-WeatherApp.git
+git clone https://github.com/your-username/Aura-BankingApp.git
