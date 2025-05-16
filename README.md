@@ -1,7 +1,5 @@
 # 🌤 Aura – Simple Bank App (Project P5)
 
-<img width="300" alt="Aura Bank App" src="![image](https://github.com/user-attachments/assets/2636fc06-9f7e-4811-a178-4bcc679f0fc8)">
-
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -54,10 +52,14 @@ Contains the transaction data structure (`Transaction`) and handles JSON decodin
 - Xcode 15 or later
 - iOS 17 or later
 
----
-
 ### Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/your-username/Aura-BankingApp.git
+
+`git clone https://github.com/your-username/Aura-BankingApp.git`
+
+---
+![image](https://github.com/user-attachments/assets/a3533435-4c1a-415e-bb79-3826461d7d85)
+
+
+
